@@ -1,6 +1,7 @@
 # WISH
 
 **WISH — Where I Stay Human**
+
 https://wish-brown.vercel.app/
 
 A full-stack social platform built with React, Express.js, and PostgreSQL.
