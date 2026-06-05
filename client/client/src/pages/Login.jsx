@@ -47,7 +47,7 @@ function Login() {
         relative
       "
       style={{
-        backgroundImage: "url('/public/w1.png')"
+        backgroundImage: "url('/w1.png')"
       }}
     >
       

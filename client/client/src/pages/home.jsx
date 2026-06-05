@@ -68,7 +68,7 @@ function Home() {
           scale-110
         "
         style={{
-          backgroundImage: "url('/public/w1.png')"
+          backgroundImage: "url('/w1.png')"
         }}
       />
       <title>Homepage</title>

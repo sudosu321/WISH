@@ -51,7 +51,7 @@ function Register() {
         relative
       "
       style={{
-        backgroundImage: "url('/public/w1.png')"
+        backgroundImage: "url('/w1.png')"
       }}>
       <title>Join us</title>
       <div className="w-96 p-8  bg-black/40
