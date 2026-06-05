@@ -2,6 +2,7 @@
 
 **WISH — Where I Stay Human**
 https://wish-brown.vercel.app/
+
 A full-stack social platform built with React, Express.js, and PostgreSQL.
 
 WISH is a minimal retro-themed platform where users can share thoughts and images, interact with content, and express themselves through a simple, distraction-free interface.
