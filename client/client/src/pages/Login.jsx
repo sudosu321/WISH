@@ -1,0 +1,151 @@
+import { Link } from "react-router-dom";
+
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+function Login() {
+  const [username,setUsername] = useState('')
+  const [password,setPassword] = useState('')
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
+
+  const handleLogin = async () => {
+    if (!username || !password) {
+    setError('Please fill in all fields')
+    return
+  }
+    const res = await fetch('http://localhost:5000/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    })
+
+    const data = await res.json()
+    if (res.ok) {
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('username', data.username)
+      navigate('/home')
+    } else {
+      setError(data.message)
+    }
+  }
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#050505]">
+      <title>LOGIN</title>
+      <div
+        className="
+          w-96
+          p-8
+          bg-[#0E1116]
+          border
+          border-red-900
+          shadow-[0_0_30px_rgba(217,4,41,0.25)]
+          flex
+          flex-col
+          gap-4
+        "
+      >
+        <h1
+          
+          className="
+            text-center
+            text-[#D90429]
+            text-5xl
+            font-[VT323]
+            tracking-[0.5rem]
+            uppercase
+            drop-shadow-[0_0_12px_rgba(217,4,41,0.7)]
+          "
+        >
+          WISH
+        </h1>
+
+        {error ? (
+        <p className="text-center font-[VT323] text-red-500 text-s tracking-widest mb-2">
+          {error}
+        </p>
+      ) : (
+        <p className="text-center font-[VT323] text-gray-500 text-s tracking-widest mb-2">
+          you were expected
+        </p>
+      )}
+
+        <form className="flex flex-col gap-4">
+          <input
+          onChange={(e) => setUsername(e.target.value)}
+            type="text"
+            placeholder="Username"
+            className="
+              w-full
+              bg-black
+              border
+              border-gray-800
+              text-gray-200
+              p-3
+              placeholder:text-gray-600
+              focus:border-red-700
+              outline-none
+              transition-all
+            "
+          />
+
+          <input
+          onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            placeholder="Password"
+            className="
+              w-full
+              bg-black
+              border
+              border-gray-800
+              text-gray-200
+              p-3
+              placeholder:text-gray-600
+              focus:border-red-700
+              outline-none
+              transition-all
+            "
+          />
+           <p className="text-center mt-3 font-[VT323] text-gray-500 text-s tracking-widest mb-2">
+          first time here ? <Link
+                to="/register"
+                className="text-red-500 hover:text-red-400"
+              >Register</Link>
+        </p>
+          <button
+          onClick={(e) => {
+              e.preventDefault()
+              handleLogin()
+            }}
+            className="
+              w-full
+              mt-2
+              bg-[#D90429]
+              hover:bg-[#b10322]
+              text-white
+              py-3
+              uppercase
+              tracking-widest
+              transition-all
+            "
+          >
+          <h4  className="
+            text-center
+            text-[#ffffff]
+            text-2xl
+            font-[VT323]
+            tracking-[0.5rem]
+            uppercase
+            drop-shadow-[0_0_12px_rgba(217,4,41,0.7)]
+          ">
+          LOGIN
+          </h4>
+          </button>
+        </form>
+      
+      </div>
+    </div>
+  );
+}
+
+export default Login;
