@@ -1,6 +1,0 @@
-node_modules
-.env
-client/client/node_modules
-client/client/.env
-server/node_modules
-server/.env
