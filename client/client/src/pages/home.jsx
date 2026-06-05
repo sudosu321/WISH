@@ -34,7 +34,7 @@ function Home() {
       formData.append("description", desc);
       formData.append("image", image);
 
-      const res = await fetch("http://localhost:5000/posts", {
+      const res = await fetch("https://wish-kc7i.onrender.com/posts", {
         method: "POST",
         body: formData,
       });
@@ -44,7 +44,7 @@ function Home() {
         setImage(null);
         setDesc("");
         setUploading(false);
-        const postsRes = await fetch("http://localhost:5000/posts");
+        const postsRes = await fetch("https://wish-kc7i.onrender.com/posts");
         const data = await postsRes.json();
         setPosts(data);
       }

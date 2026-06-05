@@ -14,7 +14,7 @@ function Login() {
     setError('Please fill in all fields')
     return
   }
-    const res = await fetch('http://localhost:5000/login', {
+    const res = await fetch('https://wish-kc7i.onrender.com/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
