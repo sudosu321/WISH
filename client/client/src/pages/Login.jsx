@@ -7,6 +7,8 @@ function Login() {
   const [username,setUsername] = useState('')
   const [password,setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading , setLoading] = useState('')
+
   const navigate = useNavigate()
 
   const handleLogin = async () => {
@@ -14,6 +16,7 @@ function Login() {
     setError('Please fill in all fields')
     return
   }
+  setLoading(true);
     const res = await fetch('https://wish-kc7i.onrender.com/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -28,18 +31,37 @@ function Login() {
     } else {
       setError(data.message)
     }
+    setLoading(false);
   }
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#050505]">
+    
+    <div
+      className="
+        min-h-screen
+        flex
+        items-center
+        justify-center
+        bg-cover
+        bg-center
+        bg-fixed
+        relative
+      "
+      style={{
+        backgroundImage: "url('/wallpaper/w1.png')"
+      }}
+    >
+      
       <title>LOGIN</title>
       <div
         className="
           w-96
           p-8
-          bg-[#0E1116]
+          bg-black/40
+          backdrop-blur-md
           border
+          rounded-3xl
           border-red-900
-          shadow-[0_0_30px_rgba(217,4,41,0.25)]
+          shadow-[0_0_30px_rgba(217,4,41,0.50)]
           flex
           flex-col
           gap-4
@@ -113,6 +135,7 @@ function Login() {
               >Register</Link>
         </p>
           <button
+          disabled={loading}
           onClick={(e) => {
               e.preventDefault()
               handleLogin()
@@ -138,7 +161,7 @@ function Login() {
             uppercase
             drop-shadow-[0_0_12px_rgba(217,4,41,0.7)]
           ">
-          LOGIN
+            {loading?"LOGGING IN": "LOGIN"}
           </h4>
           </button>
         </form>

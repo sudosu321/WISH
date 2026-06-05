@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 function Home() {
   const [posts, setPosts] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
   const [image, setImage] = useState(null);
   const [desc, setDesc] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -10,7 +11,7 @@ function Home() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch("http://localhost:5000/posts");
+        const res = await fetch("https://wish-kc7i.onrender.com/posts");
         const data = await res.json();
         setPosts(data);
       } catch (err) {
@@ -55,33 +56,64 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white">
-      <title>WISH</title>
+    <div className="min-h-screen relative overflow-x-hidden">
+
+      <div
+        className="
+          fixed
+          inset-0
+          -z-10
+          bg-cover
+          bg-center
+          scale-110
+        "
+        style={{
+          backgroundImage: "url('/wallpaper/w1.png')"
+        }}
+      />
+      <title>Homepage</title>
       <section className="relative h-[40vh] flex items-center justify-center overflow-hidden">
-        <h1 className="absolute text-[8rem] md:text-[12rem] font-black uppercase tracking-widest text-red-950/10 select-none">
-          REMEMBER
-        </h1>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/10 to-transparent " />
+
         <div className="relative z-10 text-center px-6">
-          <h2 className="text-4xl md:text-7xl italic text-gray-200">
-            "Find this place familiar ?"
+          <h2 className="text-4xl md:text-8xl font-[VT323] text-gray-200">
+           Leave a piece of yourself...
           </h2>
-          <p className="mt-6 text-red-700 uppercase tracking-[0.5rem] text-sm">
+          <p className="mt-6 text-amber-50 uppercase tracking-[0.5rem] text-sm">
             WISH - Where I stay human
           </p>
         </div>
       </section>
 
-      <section className="max-w-5xl mx-auto px-6 pb-16">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+      <section className="max-w-6xl mx-auto px-8 pb-16 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {posts.map((post) => (
             <div
               key={post.id}
-              className="bg-[#0E1116] border border-red-950 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(217,4,41,0.2)]"
+              onClick={() => setSelectedPost(post)}
+              className="
+                bg-black/20
+                backdrop-blur-lg
+                border
+                border-red-950/70
+                overflow-hidden
+                cursor-pointer
+
+                transition-all
+                duration-300
+                ease-out
+                rounded-3xl
+                hover:-translate-y-1
+                hover:scale-105
+                hover:border-red-700
+                hover:shadow-[0_0_35px_rgba(217,4,41,0.35)]
+              "
             >
               <img
                 src={post.img}
                 alt={post.user}
-                className="w-full aspect-[3/4] object-cover"
+                className="w-full  bg-black/40
+          backdrop-blur-md aspect-[4/4] object-cover"
               />
               <div className="p-3">
                 <h3 className="text-red-400 text-sm font-medium">
@@ -104,7 +136,7 @@ function Home() {
       {uploading && (
         <div className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-50">
           <div className="w-12 h-12 border-4 border-red-900 border-t-red-500 rounded-full animate-spin mb-4" />
-          <p className="text-red-500 uppercase tracking-widest text-sm font-[VT323] text-xl">
+          <p className="text-red-500 uppercase tracking-widest text-m font-[VT323] text-xl">
             Uploading...
           </p>
         </div>
@@ -149,6 +181,65 @@ function Home() {
           </div>
         </div>
       )}
+      {selectedPost && (
+      <div
+        className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50"
+        onClick={() => setSelectedPost(null)}
+      >
+        <div
+          className="
+            bg-black/40
+          backdrop-blur-md
+            border border-red-900
+            rounded-2xl
+            w-[70%]
+            max-w-5xl
+            max-h-[90vh]
+            overflow-auto
+          "
+          onClick={(e) => e.stopPropagation()}
+        >
+
+          <img
+            src={selectedPost.img}
+            alt=""
+            className="w-full max-h-[70vh] object-contain"
+          />
+
+          <div className="p-6">
+            <h2 className="text-red-500 text-xl font-bold">
+              @{selectedPost.user}
+            </h2>
+
+            <p className="mt-4 text-gray-300">
+              {selectedPost.desc}
+            </p>
+
+            <button
+              onClick={() => setSelectedPost(null)}
+              className="
+                absolute
+                top-3
+                right-3
+                w-10
+                h-10
+                font-[VT323]
+                text-2xl
+               bg-black/40
+                backdrop-blur-md
+                border border-red-900
+                text-red-500
+                hover:bg-red-900
+                hover:text-white
+              "
+            >
+              X
+            </button>
+          </div>
+
+        </div>
+      </div>
+    )}
     </div>
   );
 }
