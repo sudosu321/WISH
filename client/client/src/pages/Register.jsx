@@ -10,6 +10,15 @@ function Register() {
   const navigate = useNavigate()
 
   const handleRegister = async () => {
+    const usernameRegex = /^[a-zA-Z0-9_]+$/
+    if (!usernameRegex.test(username)) {
+      setError('Username can only contain letters, numbers and underscores')
+      return
+    }
+    if (!usernameRegex.test(password)) {
+      setError('Password can only contain letters, numbers and underscores')
+      return
+    }
     if (!username || !password) {
       setError('Please fill in all fields')
       return

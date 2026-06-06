@@ -11,7 +11,7 @@ function Home() {
   const [uploading, setUploading] = useState(false);
   const [users, setUsers] = useState([]);
   const [me, setMe] = useState(null);
-  const [showSidebar, setShowSidebar] = useState(true);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -90,7 +90,7 @@ function Home() {
 
       {/* Background */}
       <div
-        className="fixed inset-0 -z-10 bg-cover bg-center scale-110"
+        className="fixed inset-0 -z-10 bg-cover bg-center scale-100"
         style={{ backgroundImage: "url('/w1.png')" }}
       />
 
@@ -98,8 +98,7 @@ function Home() {
 
       {/* Floating user bar */}
       {me && (
-        <Link
-          to={`/user/${me.username}`}
+        <Link to={`/user/${me.username}`}
           className="
             fixed top-5 left-5 z-50
             flex items-center gap-3
@@ -109,8 +108,7 @@ function Home() {
             shadow-[0_0_20px_rgba(217,4,41,0.20)]
             hover:border-red-600 hover:shadow-[0_0_28px_rgba(217,4,41,0.40)] hover:bg-black/60
             transition-all duration-300 group
-          "
-        >
+          ">
           <img
             src={me.avatar_img || "/def_avatar.png"}
             onError={(e) => { e.target.src = "/def_avatar.png"; }}
@@ -183,8 +181,12 @@ function Home() {
                 alt={post.user}
                 className="w-full aspect-square object-cover"
               />
+              
               <div className="p-3">
-                <h3 className="text-red-400 text-sm font-medium truncate">@{post.user}</h3>
+                <h3 className="text-red-400 text-sm font-medium truncate">
+                   
+                  @{post.user}
+                  </h3>
                 <p className="text-gray-500 text-xs mt-1 truncate">{post.desc}</p>
               </div>
             </div>
@@ -300,8 +302,10 @@ function Home() {
           >
             <img src={selectedPost.img} alt="" className="w-full max-h-[70vh] object-contain" />
             <div className="p-6">
+              <Link to={`/user/${selectedPost.user}`}>
               <h2 className="text-red-500 text-xl font-bold">@{selectedPost.user}</h2>
               <p className="mt-4 text-gray-300">{selectedPost.desc}</p>
+              </Link>
             </div>
             <button
               onClick={() => setSelectedPost(null)}

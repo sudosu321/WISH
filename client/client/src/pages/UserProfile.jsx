@@ -10,7 +10,7 @@ function UserProfile() {
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
-  const [showSidebar, setShowSidebar] = useState(true);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [editName, setEditName] = useState("");
@@ -95,7 +95,54 @@ function UserProfile() {
     }
   };
 
-  if (!user) return <div>Loading...</div>;
+  if (!user)  return (
+    
+    <div
+      className="
+        min-h-screen
+        flex
+        items-center
+        justify-center
+        bg-cover
+        bg-center
+        bg-fixed
+        relative
+      "
+      style={{
+        backgroundImage: "url('/w1.png')"
+      }}
+    >      
+      <title>Loading...</title>
+      <div
+        className="
+          w-96
+          p-8
+          bg-black/40
+          backdrop-blur-md
+          border
+          rounded-3xl
+          border-red-900
+          shadow-[0_0_30px_rgba(217,4,41,0.50)]
+          flex
+          flex-col
+          gap-4
+        "
+      >
+        <h1
+          className="
+            text-center
+            text-[#D90429]
+            text-xl
+            font-[VT323]
+            uppercase
+            drop-shadow-[0_0_12px_rgba(217,4,41,0.7)]
+          "
+        >
+          Wait while we load for you ...
+        </h1>  
+      </div>
+    </div>
+  );
 
   const otherPosts = allPosts.filter((p) => p.user !== username);
 
@@ -111,7 +158,7 @@ function UserProfile() {
 
       {/* Background */}
       <div
-        className="fixed inset-0 -z-10 bg-cover bg-center scale-110"
+        className="fixed inset-0 -z-10 bg-cover bg-center scale-100"
         style={{ backgroundImage: "url('/w1.png')" }}
       />
 
@@ -162,19 +209,21 @@ function UserProfile() {
       <div className="px-8 pt-10 pb-16">
 
         {/* Profile card */}
-        <div className="
-          bg-black/40 backdrop-blur-md border border-red-900
-          rounded-3xl p-8 shadow-[0_0_30px_rgba(217,4,41,0.30)]
-          flex items-center gap-8 relative
-        ">
+        <div className={`
+        bg-black/40 backdrop-blur-md border rounded-3xl p-5 md:p-8 flex flex-col sm:flex-row items-center gap-4 md:gap-8 relative
+        ${isOwnProfile
+          ? "border-blue-500/60 shadow-[0_0_30px_rgba(0,150,255,0.25)]"
+          : "border-red-900 shadow-[0_0_30px_rgba(217,4,41,0.30)]"
+        }
+      `}>
           <img
             src={user.avatar_img || "/def_avatar.png"}
             onError={(e) => { e.target.src = "/def_avatar.png"; }}
             alt=""
-            className="w-36 h-36 rounded-full object-cover border-2 border-red-700 shrink-0"
+            className="w-32 h-32 rounded-full object-cover border-2 border-red-700 shrink-0"
           />
           <div className="flex-1 min-w-0">
-            <h1 className="text-[#D90429] text-5xl font-[VT323] uppercase truncate">
+            <h1 className="text-[#D90429] text-4xl font-[VT323] uppercase truncate">
               {user.name || user.username}
             </h1>
             <p className="text-gray-500 mt-1">@{user.username}</p>
@@ -419,8 +468,9 @@ function UserProfile() {
           >
             <img src={selectedPost.img} alt="" className="w-full max-h-[70vh] object-contain" />
             <div className="p-6">
+              <Link to={`/user/${selectedPost.user}`}>
               <h2 className="text-red-500 text-xl font-bold">@{selectedPost.user}</h2>
-              <p className="mt-4 text-gray-300">{selectedPost.desc}</p>
+              <p className="mt-4 text-gray-300">{selectedPost.desc}</p></Link>
             </div>
             <button
               onClick={() => setSelectedPost(null)}
