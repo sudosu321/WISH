@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import API_URL from "../config";
 function Register() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -18,12 +18,20 @@ function Register() {
       setError('Username must be at least 4 characters')
       return
     }
+    if (username.length > 15) {
+      setError('Username must be at most 15 characters')
+      return
+    }
     if (password.length < 6) {
       setError('Password must be at least 6 characters')
       return
     }
+    if (password.length > 12) {
+      setError('Password must be at most 12 characters')
+      return
+    }
       setLoading(true)
-    const res = await fetch('https://wish-kc7i.onrender.com/register', {
+    const res = await fetch(`${API_URL}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })

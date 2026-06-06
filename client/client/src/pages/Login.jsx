@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import API_URL from "../config";
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -12,12 +12,16 @@ function Login() {
   const navigate = useNavigate()
 
   const handleLogin = async () => {
+    if(username.length>15 || password.length>15){
+      setError('Invalid length fields')
+      return
+    }
     if (!username || !password) {
     setError('Please fill in all fields')
     return
   }
   setLoading(true);
-    const res = await fetch('https://wish-kc7i.onrender.com/login', {
+    const res = await fetch(`${API_URL}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
