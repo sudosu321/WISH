@@ -212,7 +212,7 @@ function UserProfile() {
             initial="hidden"
             animate="show"
             className={`
-              bg-black/60 backdrop-blur-md border rounded-2xl p-5 sm:p-8
+              bg-black/20 backdrop-blur-md border rounded-2xl p-5 sm:p-8
               flex flex-col sm:flex-row items-center gap-5 relative
               ${isOwnProfile
                 ? "border-blue-500/50 shadow-[0_0_30px_rgba(0,150,255,0.2)]"
@@ -259,7 +259,7 @@ function UserProfile() {
               variants={fadeUp(0.15)}
               initial="hidden"
               animate="show"
-              className="mt-6 bg-black/60 backdrop-blur-md border border-white/5 rounded-3xl p-5 sm:p-8 shadow-[0_0_30px_rgba(4,4,41,0.3)]"
+              className="mt-6 bg-black/20 backdrop-blur-md border border-white/5 rounded-3xl p-5 sm:p-8 shadow-[0_0_30px_rgba(4,4,41,0.3)]"
             >
               <h2 className="text-white font-[Rajdhani] text-xl sm:text-2xl uppercase tracking-widest mb-4">
                 {user.name || user.username}'s Posts
@@ -297,7 +297,7 @@ function UserProfile() {
               animate="show"
               className="mt-10"
             >
-              <div className="flex items-center gap-4 mb-5 bg-black/60 backdrop-blur-md border border-white/5 rounded-2xl px-5 py-4">
+              <div className="flex items-center gap-4 mb-5 bg-black/20 backdrop-blur-md border border-white/5 rounded-2xl px-5 py-4">
                 <h2 className="text-white font-[Rajdhani] text-xl sm:text-3xl uppercase tracking-widest whitespace-nowrap">
                   From the Community
                 </h2>
@@ -447,7 +447,7 @@ function UserProfile() {
             initial="hidden"
             animate="show"
             exit="exit"
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 px-0 sm:px-4"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 px-0 sm:px-4"
             onClick={() => setSelectedPost(null)}
           >
             <motion.div
@@ -457,7 +457,7 @@ function UserProfile() {
               animate="show"
               exit="exit"
               onClick={(e) => e.stopPropagation()}
-              className="relative bg-black/50 backdrop-blur-md border border-white/10 rounded-t-2xl sm:rounded-2xl w-full sm:max-w-4xl max-h-[92vh] overflow-auto shadow-[0_0_30px_rgba(4,4,41,0.4)]"
+              className="relative bg-black/60 backdrop-blur-md border border-white/10 rounded-t-2xl sm:rounded-2xl w-full sm:max-w-4xl max-h-[92vh] overflow-auto shadow-[0_0_30px_rgba(4,4,41,0.4)]"
             >
               {/* Drag handle */}
               <div className="w-10 h-1 rounded-full bg-gray-700 mx-auto mt-3 sm:hidden" />
@@ -472,7 +472,7 @@ function UserProfile() {
               </div>
               <button
                 onClick={() => setSelectedPost(null)}
-                className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center font-[VT323] text-xl bg-black/50 backdrop-blur-md border border-white/10 rounded-lg text-red-500 hover:bg-red-900 hover:text-white transition-colors"
+                className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center font-[VT323] text-xl bg-black/20 backdrop-blur-md border border-white/10 rounded-lg text-red-500 hover:bg-red-900 hover:text-white transition-colors"
               >
                 ✕
               </button>
