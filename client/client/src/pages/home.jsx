@@ -79,7 +79,7 @@ function Home() {
       formData.append("username", localStorage.getItem("username"));
       formData.append("description", desc);
       formData.append("image", image);
-      const res = await fetch(`${API_URL}/users`, { method: "POST", body: formData });
+      const res = await fetch(`${API_URL}/posts`, { method: "POST", body: formData });
       if (res.ok) { setShowModal(false); setImage(null); setDesc(""); }
     } catch (err) { console.error(err); }
     finally { setUploading(false); }
