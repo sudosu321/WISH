@@ -13,7 +13,7 @@ function createMeteor(canvasWidth) {
 
   const startFromTop = Math.random() > 0.3;
   const x = startFromTop
-    ? randomBetween(-1000, 0)
+    ? randomBetween(-1500, 0)
     : randomBetween(canvasWidth * 0.1, canvasWidth);
   const y = startFromTop ? randomBetween(-200, -20) : randomBetween(-100, 0);
 
