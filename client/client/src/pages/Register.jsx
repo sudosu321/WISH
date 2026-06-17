@@ -2,8 +2,12 @@ import { Link } from "react-router-dom";
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import API_URL from "../config";
+import { motion } from "framer-motion";
+import MeteorShower from "../components/MeteorShower";
 function Register() {
   const [username, setUsername] = useState('')
+  const [name, setName] = useState('')
+
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading , setLoading] = useState('')
@@ -17,6 +21,10 @@ function Register() {
     }
     if (!usernameRegex.test(password)) {
       setError('Password can only contain letters, numbers and underscores')
+      return
+    }
+    if(name.length>15){
+      setError('Name must be at most 15 characters')
       return
     }
     if (!username || !password) {
@@ -43,7 +51,7 @@ function Register() {
     const res = await fetch(`${API_URL}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ username, name, password })
     })
 
     const data = await res.json()
@@ -71,46 +79,157 @@ function Register() {
         backgroundImage: "url('/w1.png')"
       }}>
       <title>Join us</title>
-      <div className="w-96 p-8  bg-black/40
+      <motion.div 
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, ease: "backInOut" }}
+     className="
+          w-full
+              z-10
+
+          max-w-md
+          p-8
+          bg-black/20
           backdrop-blur-md
-          border
-          rounded-3xl  border-red-900 shadow-[0_0_30px_rgba(217,4,41,0.25)] flex flex-col gap-4">
-        <h1 className="text-center text-[#D90429] text-5xl font-[VT323] tracking-[0.5rem] uppercase drop-shadow-[0_0_12px_rgba(217,4,41,0.7)]">
-          Join US
+          rounded-3xl
+         
+          shadow-[0_0_30px_rgba(1,4,41,0.50)]
+          flex
+          flex-col
+          gap-4
+        ">
+        <h1
+          className="
+            text-center
+            font-['Exo_2']
+            text-[#fffbfc]
+            text-5xl
+            uppercase
+            drop-shadow-[0_0_12px_rgba(1,4,41,1)]
+          "
+        >
+         JOIN US ! 
         </h1>
 
-        <p className="text-center font-[VT323] text-red-500 text-s tracking-widest mb-2">
-          {error}
-        </p>
+       {error ? (
+        <motion.p 
+        initial={{ x: 0 }}
+        animate={{ x: [0, -10, 10, -10, 10, 0] }}
+        transition={{ duration: 0.4 }}
+              className="text-center  text-red-200 text-s  font-mono mb-2 mt-1">
+                {error}
+        </motion.p>
+      ) : (
+        <motion.p className="text-center font-['Rajdhani'] text-white text-s  mb-2 mt-1">
+          Register now to explore the world of wisdom.
+        </motion.p>
+      )}
 
         <form className="flex flex-col gap-4">
+          <label className="text-gray-300  text-xs uppercase tracking-widest">
+            Username
+          </label>
           <input
             type="text"
             placeholder="New Username"
+            className="
+            h-14
+              text-lg
+               w-full
+               bg-black/20
+               backdrop-blur-md
+              text-gray-200
+              p-3
+              placeholder:text-gray-600
+              focus:border-transparent
+              outline-none
+              transition-all
+              rounded-2xl
+            "
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full bg-black border border-gray-800 text-gray-200 p-3 placeholder:text-gray-600 focus:border-red-700 outline-none transition-all"
           />
+           <label className="text-gray-300  text-xs uppercase tracking-widest">
+            Name
+          </label>
+          <input
+            type="text"
+            placeholder="Your Name"
+            className="
+            h-14
+              text-lg
+               w-full
+               bg-black/20
+               backdrop-blur-md
+              text-gray-200
+              p-3
+              placeholder:text-gray-600
+              focus:border-transparent
+              outline-none
+              transition-all
+              rounded-2xl
+            "
+            onChange={(e) => setName(e.target.value)}
+          />
+          <label className="text-gray-300  text-xs uppercase tracking-widest">
+            Password
+          </label>
           <input
             type="password"
             placeholder="New Password"
+            className="
+            h-14
+              text-lg
+               w-full
+               bg-black/20
+               backdrop-blur-md
+              text-gray-200
+              p-3
+              placeholder:text-gray-600
+              focus:border-transparent
+              outline-none
+              transition-all
+              rounded-2xl
+            "
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-black border border-gray-800 text-gray-200 p-3 placeholder:text-gray-600 focus:border-red-700 outline-none transition-all"
           />
           <p className="text-center mt-3 font-[VT323] text-gray-500 text-s tracking-widest mb-2">
-            Registered? <Link to="/" className="text-red-500 hover:text-red-400">Login Now</Link>
+            Registered? <Link to="/" className="text-white font-[Rajdhani] hover:scale-105 drop-shadow-[0_0_12px_rgba(1,4,41,1)] transition-transform transition-duration-300">
+Login Now</Link>
           </p>
-          <button
+          <motion.button
+          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 800 }}
           disabled={loading}
             onClick={(e) => { e.preventDefault(); handleRegister() }}
-            className="w-full mt-2 bg-[#D90429] hover:bg-[#b10322] text-white py-3 uppercase tracking-widest transition-all"
+            className="
+              w-full
+              mt-2
+              bg-black/10
+               backdrop-blur-md
+              hover:bg-black/100
+              text-white
+              py-3
+              rounded-2xl
+
+              transition-all
+            "
           
           >
-            <h4 className="text-center text-white text-2xl font-[VT323]  uppercase">
+            <h4 className="
+            text-center
+            text-[#ffffff]
+            text-2xl
+            font-[VT323]
+           
+            drop-shadow-[0_0_12px_rgba(4,4,41,0.7)]">
               {loading ? "REGISTERING..." :"REGISTER NOW"}
             </h4>
-          </button>
+          </motion.button>
         </form>
-      </div>
+      </motion.div>
+            <MeteorShower density={5} />
+      
     </div>
   );
 }

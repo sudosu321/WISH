@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import API_URL from "../config";
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion } from "framer-motion";
+import MeteorShower from "../components/MeteorShower";
 
 function Login() {
   const [username,setUsername] = useState('')
@@ -38,8 +40,11 @@ function Login() {
     setLoading(false);
   }
   return (
+    <>
+     <MeteorShower density={5} />
+
+    <motion.div
     
-    <div
       className="
         min-h-screen
         flex
@@ -53,92 +58,113 @@ function Login() {
       style={{
         backgroundImage: "url('/w1.png')"
       }}
+
     >
       
       <title>LOGIN</title>
-      <div
-        className="
-          w-96
-          p-8
-          bg-black/40
-          backdrop-blur-md
-          border
-          rounded-3xl
-          border-red-900
-          shadow-[0_0_30px_rgba(217,4,41,0.50)]
-          flex
-          flex-col
-          gap-4
-        "
+      <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "backInOut" }}
+            className="
+              z-10
+              w-full
+              max-w-md
+              p-8
+              bg-black/20
+              backdrop-blur-md
+              rounded-3xl
+            
+              shadow-[0_0_30px_rgba(1,4,41,0.50)]
+              flex
+              flex-col
+              gap-4
+            "
       >
         <h1
-          
           className="
             text-center
-            text-[#D90429]
+            font-['Exo_2']
+            text-[#fffbfc]
             text-5xl
-            font-[VT323]
-            tracking-[0.5rem]
             uppercase
-            drop-shadow-[0_0_12px_rgba(217,4,41,0.7)]
+            drop-shadow-[0_0_12px_rgba(1,4,41,1)]
           "
         >
-          WISH
+         WELCOME 
         </h1>
 
         {error ? (
-        <p className="text-center font-[VT323] text-red-500 text-s tracking-widest mb-2">
+        <motion.p 
+        initial={{ x: 0 }}
+  animate={{ x: [0, -10, 10, -10, 10, 0] }}
+  transition={{ duration: 0.4 }}
+        className="text-center  text-red-200 text-s  font-mono mb-2 mt-1">
           {error}
-        </p>
+
+        </motion.p>
       ) : (
-        <p className="text-center font-[VT323] text-gray-500 text-s tracking-widest mb-2">
-          you were expected
-        </p>
+        <motion.p className="text-center font-['Rajdhani'] text-white text-s  mb-2 mt-1">
+          Login now to explore the world of wisdom.
+        </motion.p>
       )}
 
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-3">
+          <label className="text-gray-300 text-xs uppercase tracking-widest">
+            Username
+          </label>
           <input
           onChange={(e) => setUsername(e.target.value)}
             type="text"
-            placeholder="Username"
+            placeholder="Enter your username"
             className="
               w-full
-              bg-black
-              border
-              border-gray-800
+              h-14
+              text-lg
+               bg-black/20
+               backdrop-blur-md
               text-gray-200
               p-3
               placeholder:text-gray-600
-              focus:border-red-700
+              
               outline-none
               transition-all
+              rounded-2xl
             "
           />
-
+          <label className="text-gray-300 mt-2 text-xs uppercase tracking-widest">
+            Password
+          </label>
           <input
           onChange={(e) => setPassword(e.target.value)}
             type="password"
-            placeholder="Password"
+            placeholder="Enter your password"
             className="
-              w-full
-              bg-black
-              border
-              border-gray-800
+            h-14
+              text-lg
+               w-full
+               bg-black/20
+               backdrop-blur-md
               text-gray-200
               p-3
               placeholder:text-gray-600
-              focus:border-red-700
+              focus:border-transparent
               outline-none
               transition-all
+              rounded-2xl
             "
           />
-           <p className="text-center mt-3 font-[VT323] text-gray-500 text-s tracking-widest mb-2">
-          first time here ? <Link
+           <p className="text-center mt-3 font-[Exo_2] text-white text-s tracking-widest mb-2">
+          First time here ? <Link
                 to="/register"
-                className="text-red-500 hover:text-red-400"
-              >Register</Link>
+                className="text-white font-[Rajdhani] hover:scale-105 drop-shadow-[0_0_12px_rgba(1,4,41,1)] transition-transform transition-duration-300">
+            Register
+                </Link>
         </p>
-          <button
+          <motion.button
+          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 800 }}
           disabled={loading}
           onClick={(e) => {
               e.preventDefault()
@@ -147,12 +173,13 @@ function Login() {
             className="
               w-full
               mt-2
-              bg-[#D90429]
-              hover:bg-[#b10322]
+              bg-black/10
+               backdrop-blur-md
+              hover:bg-black/100
               text-white
               py-3
-              uppercase
-              tracking-widest
+              rounded-2xl
+
               transition-all
             "
           >
@@ -161,17 +188,20 @@ function Login() {
             text-[#ffffff]
             text-2xl
             font-[VT323]
-            tracking-[0.5rem]
-            uppercase
+          
+            
             drop-shadow-[0_0_12px_rgba(217,4,41,0.7)]
           ">
-            {loading?"LOGGING IN": "LOGIN"}
+            {loading?"...": "Log In"}
           </h4>
-          </button>
+          </motion.button>
         </form>
       
-      </div>
-    </div>
+      </motion.div>
+           
+      
+    </motion.div>
+    </>
   );
 }
 

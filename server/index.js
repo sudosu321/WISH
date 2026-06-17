@@ -35,18 +35,21 @@ app.get('/', (req, res) => {
 })
 
 app.post('/register', async (req, res) => {
-  const { username, password } = req.body
+  const { username,name, password } = req.body
 
   if (!username || username.length < 4) {
     return res.status(400).json({ message: 'Username must be at least 4 characters' })
+  }
+  if (!name || name.length < 2) {
+    return res.status(400).json({ message: 'Name must be at least 2 characters' })
   }
   if (!password || password.length < 6) {
     return res.status(400).json({ message: 'Password must be at least 6 characters' })
   }
 
-  try {
-    const existing = await pool.query(
-      'SELECT * FROM dataauth WHERE username = $1',
+    try {
+      const existing = await pool.query(
+        'SELECT * FROM dataauth WHERE username = $1',
       [username]
     )
 
@@ -55,8 +58,8 @@ app.post('/register', async (req, res) => {
     }
 
     await pool.query(
-      'INSERT INTO dataauth (username, password) VALUES ($1, $2)',
-      [username, password]
+      'INSERT INTO dataauth (username, name, password) VALUES ($1, $2, $3)',
+      [username, name, password]
     )
 
     res.status(201).json({ message: 'User created' })

@@ -1,4 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Black+Ops+One&family=Bebas+Neue&family=Cinzel&family=Rajdhani&family=Exo+2&family=Philosopher&family=Cormorant+Garamond&display=swap');
+* {
+  scrollbar-width: none; /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

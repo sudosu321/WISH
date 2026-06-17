@@ -4,12 +4,15 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import ProtectedRoute from './components/ProtectedRoute'
 import UserProfile from "./pages/UserProfile";
+import ExplorePage from './components/ExplorePage'
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/explore" element={<ExplorePage />} />
+
         <Route path="/home" element={
           <ProtectedRoute>
             <Home />
