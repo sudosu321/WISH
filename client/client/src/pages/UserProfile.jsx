@@ -1,5 +1,6 @@
 import { useParams, Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import API_URL from "../config";
 import UserSidebar from "../components/UserSidebar";
@@ -302,9 +303,11 @@ function UserProfile() {
                   From the Community
                 </h2>
               </div>
-              <PostSection posts={otherPosts} setSelectedPost={setSelectedPost} />
             </motion.div>
+            
           )}
+              <PostSection posts={otherPosts} setSelectedPost={setSelectedPost} />
+
         </div>
 
         {/* RIGHT SIDEBAR — desktop only */}
@@ -321,166 +324,171 @@ function UserProfile() {
       <MobileNav />
 
       {/* ── Edit Profile Modal ──────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {showEditModal && (
-          <motion.div
-            key="edit-backdrop"
-            variants={modalBackdrop}
-            initial="hidden"
-            animate="show"
-            exit="exit"
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 px-0 sm:px-4"
-            onClick={() => setShowEditModal(false)}
-          >
+      {createPortal(
+        <AnimatePresence>
+          {showEditModal && (
             <motion.div
-              key="edit-card"
-              variants={window.innerWidth < 640 ? bottomSheet : modalSheet}
+              key="edit-backdrop"
+              variants={modalBackdrop}
               initial="hidden"
               animate="show"
               exit="exit"
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full sm:max-w-[520px] bg-[#0E1116] border border-white/10 rounded-t-2xl sm:rounded-2xl p-6 sm:p-8 flex flex-col gap-5 shadow-[0_0_40px_rgba(4,4,41,0.4)] max-h-[92vh] overflow-y-auto"
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 px-0 sm:px-4"
+              onClick={() => setShowEditModal(false)}
             >
-              {/* Drag handle */}
-              <div className="w-10 h-1 rounded-full bg-gray-700 mx-auto sm:hidden mb-1" />
-
-              <h2 className="text-white text-3xl font-[VT323] tracking-widest uppercase">Edit Profile</h2>
-
-              {/* Avatar picker */}
-              <div className="flex items-center gap-5">
-                <img
-                  src={editAvatarPreview || "/def_avatar.png"}
-                  onError={(e) => { e.target.src = "/def_avatar.png"; }}
-                  alt="preview"
-                  className="w-20 h-20 rounded-full object-cover border-2 border-white/10 shrink-0"
-                />
-                <div>
-                  <p className="text-gray-500 text-xs uppercase tracking-widest mb-2">Profile Picture</p>
-                  <label className="cursor-pointer px-4 py-2 text-sm bg-black border border-white/10 rounded-lg text-white hover:bg-blue-900/30 transition-all">
-                    Choose Image
-                    <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
-                  </label>
-                </div>
-              </div>
-
-              {/* Name */}
-              <div className="flex flex-col gap-1">
-                <div className="flex justify-between">
-                  <label className="text-gray-500 text-xs uppercase tracking-widest">Name</label>
-                  <span className="text-gray-600 text-xs">{editName.length}/14</span>
-                </div>
-                <input
-                  type="text" maxLength={14}
-                  value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
-                  placeholder="Your name"
-                  className="bg-black border border-gray-800 rounded-lg text-white px-4 py-2 text-sm outline-none focus:border-blue-700 transition-colors"
-                />
-              </div>
-
-              {/* Tagline */}
-              <div className="flex flex-col gap-1">
-                <div className="flex justify-between">
-                  <label className="text-gray-500 text-xs uppercase tracking-widest">Tagline</label>
-                  <span className="text-gray-600 text-xs">{editTagline.length}/20</span>
-                </div>
-                <input
-                  type="text" maxLength={20}
-                  value={editTagline}
-                  onChange={(e) => setEditTagline(e.target.value)}
-                  placeholder="A short line about you"
-                  className="bg-black border border-gray-800 rounded-lg text-white px-4 py-2 text-sm outline-none focus:border-blue-700 transition-colors"
-                />
-              </div>
-
-              {/* Bio */}
-              <div className="flex flex-col gap-1">
-                <div className="flex justify-between">
-                  <label className="text-gray-500 text-xs uppercase tracking-widest">Bio</label>
-                  <span className="text-gray-600 text-xs">{editBio.length}/60</span>
-                </div>
-                <textarea
-                  maxLength={60}
-                  value={editBio}
-                  onChange={(e) => setEditBio(e.target.value)}
-                  placeholder="Tell the world who you are..."
-                  rows={3}
-                  className="bg-black border border-gray-800 rounded-lg text-white px-4 py-2 text-sm outline-none focus:border-blue-700 transition-colors resize-none"
-                />
-              </div>
-
-              <div className="flex gap-3 mt-1">
-                <motion.button
-                  whileTap={{ scale: 0.97 }}
-                  onClick={handleEditSubmit}
-                  disabled={saving}
-                  className="flex-1 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm uppercase tracking-widest transition-all disabled:opacity-50"
-                >
-                  {saving ? "Saving..." : "Save Changes"}
-                </motion.button>
-                <motion.button
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setShowEditModal(false)}
-                  className="flex-1 py-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-white text-sm uppercase tracking-widest transition-all"
-                >
-                  Cancel
-                </motion.button>
-              </div>
-
-              <button
-                onClick={() => setShowEditModal(false)}
-                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center font-[VT323] text-xl bg-black/40 border border-white/10 rounded-lg text-red-500 hover:bg-red-900 hover:text-white transition-colors"
+              <motion.div
+                key="edit-card"
+                variants={window.innerWidth < 640 ? bottomSheet : modalSheet}
+                initial="hidden"
+                animate="show"
+                exit="exit"
+                onClick={(e) => e.stopPropagation()}
+                className="relative w-full sm:max-w-[520px] bg-[#0E1116] border border-white/10 rounded-t-2xl sm:rounded-2xl p-6 sm:p-8 flex flex-col gap-5 shadow-[0_0_40px_rgba(4,4,41,0.4)] max-h-[92vh] overflow-y-auto"
               >
-                ✕
-              </button>
+                {/* Drag handle */}
+                <div className="w-10 h-1 rounded-full bg-gray-700 mx-auto sm:hidden mb-1" />
+
+                <h2 className="text-white text-3xl font-[VT323] tracking-widest uppercase">Edit Profile</h2>
+
+                {/* Avatar picker */}
+                <div className="flex items-center gap-5">
+                  <img
+                    src={editAvatarPreview || "/def_avatar.png"}
+                    onError={(e) => { e.target.src = "/def_avatar.png"; }}
+                    alt="preview"
+                    className="w-20 h-20 rounded-full object-cover border-2 border-white/10 shrink-0"
+                  />
+                  <div>
+                    <p className="text-gray-500 text-xs uppercase tracking-widest mb-2">Profile Picture</p>
+                    <label className="cursor-pointer px-4 py-2 text-sm bg-black border border-white/10 rounded-lg text-white hover:bg-blue-900/30 transition-all">
+                      Choose Image
+                      <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
+                    </label>
+                  </div>
+                </div>
+
+                {/* Name */}
+                <div className="flex flex-col gap-1">
+                  <div className="flex justify-between">
+                    <label className="text-gray-500 text-xs uppercase tracking-widest">Name</label>
+                    <span className="text-gray-600 text-xs">{editName.length}/14</span>
+                  </div>
+                  <input
+                    type="text" maxLength={14}
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    placeholder="Your name"
+                    className="bg-black border border-gray-800 rounded-lg text-white px-4 py-2 text-sm outline-none focus:border-blue-700 transition-colors"
+                  />
+                </div>
+
+                {/* Tagline */}
+                <div className="flex flex-col gap-1">
+                  <div className="flex justify-between">
+                    <label className="text-gray-500 text-xs uppercase tracking-widest">Tagline</label>
+                    <span className="text-gray-600 text-xs">{editTagline.length}/20</span>
+                  </div>
+                  <input
+                    type="text" maxLength={20}
+                    value={editTagline}
+                    onChange={(e) => setEditTagline(e.target.value)}
+                    placeholder="A short line about you"
+                    className="bg-black border border-gray-800 rounded-lg text-white px-4 py-2 text-sm outline-none focus:border-blue-700 transition-colors"
+                  />
+                </div>
+
+                {/* Bio */}
+                <div className="flex flex-col gap-1">
+                  <div className="flex justify-between">
+                    <label className="text-gray-500 text-xs uppercase tracking-widest">Bio</label>
+                    <span className="text-gray-600 text-xs">{editBio.length}/60</span>
+                  </div>
+                  <textarea
+                    maxLength={60}
+                    value={editBio}
+                    onChange={(e) => setEditBio(e.target.value)}
+                    placeholder="Tell the world who you are..."
+                    rows={3}
+                    className="bg-black border border-gray-800 rounded-lg text-white px-4 py-2 text-sm outline-none focus:border-blue-700 transition-colors resize-none"
+                  />
+                </div>
+
+                <div className="flex gap-3 mt-1">
+                  <motion.button
+                    whileTap={{ scale: 0.97 }}
+                    onClick={handleEditSubmit}
+                    disabled={saving}
+                    className="flex-1 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm uppercase tracking-widest transition-all disabled:opacity-50"
+                  >
+                    {saving ? "Saving..." : "Save Changes"}
+                  </motion.button>
+                  <motion.button
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => setShowEditModal(false)}
+                    className="flex-1 py-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-white text-sm uppercase tracking-widest transition-all"
+                  >
+                    Cancel
+                  </motion.button>
+                </div>
+
+                <button
+                  onClick={() => setShowEditModal(false)}
+                  className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center font-[VT323] text-xl bg-black/40 border border-white/10 rounded-lg text-red-500 hover:bg-red-900 hover:text-white transition-colors"
+                >
+                  ✕
+                </button>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       {/* ── Post viewer modal ───────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {selectedPost && (
-          <motion.div
-            key="post-backdrop"
-            variants={modalBackdrop}
-            initial="hidden"
-            animate="show"
-            exit="exit"
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 px-0 sm:px-4"
-            onClick={() => setSelectedPost(null)}
-          >
+      {createPortal(
+        <AnimatePresence>
+          {selectedPost && (
             <motion.div
-              key="post-card"
-              variants={window.innerWidth < 640 ? bottomSheet : modalSheet}
+              key="post-backdrop"
+              variants={modalBackdrop}
               initial="hidden"
               animate="show"
               exit="exit"
-              onClick={(e) => e.stopPropagation()}
-              className="relative bg-black/60 backdrop-blur-md border border-white/10 rounded-t-2xl sm:rounded-2xl w-full sm:max-w-4xl max-h-[92vh] overflow-auto shadow-[0_0_30px_rgba(4,4,41,0.4)]"
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 px-0 sm:px-4"
+              onClick={() => setSelectedPost(null)}
             >
-              {/* Drag handle */}
-              <div className="w-10 h-1 rounded-full bg-gray-700 mx-auto mt-3 sm:hidden" />
-              <img src={selectedPost.img} alt="" className="w-full max-h-[60vh] sm:max-h-[70vh] object-contain" />
-              <div className="p-5 sm:p-6">
-                <Link to={`/user/${selectedPost.user}`}>
-                  <h2 className="text-red-500 text-xl font-bold hover:text-red-400 transition-colors">
-                    @{selectedPost.user}
-                  </h2>
-                  <p className="mt-3 text-gray-300 text-sm sm:text-base">{selectedPost.desc}</p>
-                </Link>
-              </div>
-              <button
-                onClick={() => setSelectedPost(null)}
-                className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center font-[VT323] text-xl bg-black/20 backdrop-blur-md border border-white/10 rounded-lg text-red-500 hover:bg-red-900 hover:text-white transition-colors"
+              <motion.div
+                key="post-card"
+                variants={window.innerWidth < 640 ? bottomSheet : modalSheet}
+                initial="hidden"
+                animate="show"
+                exit="exit"
+                onClick={(e) => e.stopPropagation()}
+                className="relative bg-black/60 backdrop-blur-md border border-white/10 rounded-t-2xl sm:rounded-2xl w-full sm:max-w-4xl max-h-[92vh] overflow-auto shadow-[0_0_30px_rgba(4,4,41,0.4)]"
               >
-                ✕
-              </button>
+                {/* Drag handle */}
+                <div className="w-10 h-1 rounded-full bg-gray-700 mx-auto mt-3 sm:hidden" />
+                <img src={selectedPost.img} alt="" className="w-full max-h-[60vh] sm:max-h-[70vh] object-contain" />
+                <div className="p-5 sm:p-6">
+                  <Link to={`/user/${selectedPost.user}`}>
+                    <h2 className="text-blue-500 text-xl font-bold hover:text-blue-400 transition-colors">
+                      @{selectedPost.user}W                  </h2>
+                    <p className="mt-3 text-gray-300 text-sm sm:text-base">{selectedPost.desc}</p>
+                  </Link>
+                </div>
+                <button
+                  onClick={() => setSelectedPost(null)}
+                  className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center font-[VT323] text-xl bg-black/60 backdrop-blur-md border border-white/10 rounded-lg text-blue-500 hover:bg-blue-900 hover:text-white transition-colors"
+                >
+                  ✕
+                </button>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-            <MeteorShower density={10} />
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
+      <MeteorShower density={10} />
       
     </div>
   );
